@@ -76,3 +76,14 @@ describe("GET /api/articles/", () => {
       });
   });
 });
+
+describe("Invalid Endpoint", () => {
+  test("404: Responds with a message when path is not found", () => {
+    return request(app)
+      .get("/api/invalid-path/")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Path not found");
+      });
+  });
+});

@@ -12,4 +12,8 @@ const articlesRouter = require("./routes/articles.routes");
 app.use("/api/topics", topicsRouter);
 app.use("/api/articles", articlesRouter);
 
+app.all("/*path", (req, res, next) => {
+  res.status(404).send({ msg: "Path not found" });
+});
+
 module.exports = app;
