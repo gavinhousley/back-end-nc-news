@@ -63,4 +63,16 @@ describe("GET /api/articles/", () => {
         expect(articles).toBeSortedBy("created_at", { descending: true });
       });
   });
+  test("Get: 200 = Returning article array features a comment_count  ", () => {
+    return request(app)
+      .get("/api/articles/")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles.length).not.toBe(0);
+        articles.forEach((article) => {
+          expect(typeof article.comment_count).toBe("number");
+        });
+      });
+  });
 });
