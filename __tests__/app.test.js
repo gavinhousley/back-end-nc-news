@@ -54,4 +54,13 @@ describe("GET /api/articles/", () => {
         });
       });
   });
+  test("Get: 200 = Article array is ordered by creation date from newest first", () => {
+    return request(app)
+      .get("/api/articles/")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeSortedBy("created_at", { descending: true });
+      });
+  });
 });

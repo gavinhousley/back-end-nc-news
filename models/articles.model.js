@@ -11,7 +11,8 @@ exports.fetchAllArticles = () => {
         created_at,
         votes,
         article_img_url
-     FROM articles`,
+     FROM articles
+     ORDER BY created_at DESC`,
     )
     .then(({ rows }) => rows);
 };
