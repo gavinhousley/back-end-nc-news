@@ -75,6 +75,18 @@ describe("GET /api/articles/", () => {
         });
       });
   });
+  test("Get: 200 = Responds with an array of all users from that endpoint  ", () => {
+    return request(app)
+      .get("/api/users/")
+      .expect(200)
+      .then(({ body }) => {
+        const { users } = body;
+        expect(users.length).not.toBe(0);
+        users.forEach((user) => {
+          expect(typeof user.username).toBe("string");
+        });
+      });
+  });
 });
 
 describe("Invalid Endpoint", () => {
