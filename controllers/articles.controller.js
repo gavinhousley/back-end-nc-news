@@ -30,6 +30,6 @@ exports.getAllArticleComments = (req, res) => {
     return res.status(400).send({ msg: "Invalid article_id" });
   }
   getAllArticleCommentsService(article_id).then((comments) => {
-    res.status(200).send({ comments });
+    res.status(200).send({ comments: comments });
   });
 };

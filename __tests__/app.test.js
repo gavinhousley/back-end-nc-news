@@ -116,6 +116,15 @@ describe("GET /api/articles/", () => {
         });
       });
   });
+  test("Get: 200 = Responds with the comments from a given article_id endpoint and in order of most recent ", () => {
+    return request(app)
+      .get("/api/articles/9/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments).toBeSortedBy("created_at", { descending: true });
+      });
+  });
 });
 
 describe("Invalid Endpoint", () => {
