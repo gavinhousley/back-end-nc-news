@@ -95,12 +95,12 @@ describe("GET /api/articles/", () => {
       .then(({ body }) => {
         const { article } = body;
         expect(article.article_id).toBe(9);
-        expect(typeof article.author).toBe("string");
-        expect(typeof article.title).toBe("string");
-        expect(typeof article.body).toBe("string");
-        expect(typeof article.topic).toBe("string");
-        expect(typeof article.votes).toBe("number");
-        expect(typeof article.votes).toBe("number");
+        expect(article.author).toBe("butter_bridge");
+        expect(article.title).toBe("They're not exactly dogs, are they?");
+        expect(article.body).toBe("Well? Think about it.");
+        expect(article.topic).toBe("mitch");
+        expect(article.votes).toBe(0);
+        expect(article.created_at).toBe("2020-06-06T09:10:00.000Z");
       });
   });
 });
