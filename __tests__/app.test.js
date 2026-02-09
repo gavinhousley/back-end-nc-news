@@ -83,8 +83,24 @@ describe("GET /api/articles/", () => {
         const { users } = body;
         expect(users.length).not.toBe(0);
         users.forEach((user) => {
-          expect(typeof user.username).toBe("string");
+          expect(typeof user.name).toBe("string");
+          expect(typeof user.avatar_url).toBe("string");
         });
+      });
+  });
+  test("Get: 200 = Responds with a given article at a specific article_id endpoint  ", () => {
+    return request(app)
+      .get("/api/articles/9")
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article.article_id).toBe(9);
+        expect(typeof article.author).toBe("string");
+        expect(typeof article.title).toBe("string");
+        expect(typeof article.body).toBe("string");
+        expect(typeof article.topic).toBe("string");
+        expect(typeof article.votes).toBe("number");
+        expect(typeof article.votes).toBe("number");
       });
   });
 });
