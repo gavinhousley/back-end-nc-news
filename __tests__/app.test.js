@@ -157,6 +157,31 @@ describe("PATCH /api/:article_id/votes", () => {
         expect(article.votes).toBe(1);
       });
   });
+
+  test("Patch: 200 = Accepts an object to update the number of votes in an article by a larger amount.", () => {
+    return request(app)
+      .patch("/api/articles/9")
+      .send({
+        inc_votes: 15,
+      })
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article.votes).toBe(15);
+      });
+  });
+  test("Patch: 200 = Accepts an object to update the number of votes in an article by a negative amount.", () => {
+    return request(app)
+      .patch("/api/articles/9")
+      .send({
+        inc_votes: -5,
+      })
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article.votes).toBe(-5);
+      });
+  });
 });
 
 describe("Invalid Endpoint", () => {
