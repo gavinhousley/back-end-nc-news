@@ -184,6 +184,17 @@ describe("PATCH /api/:article_id/votes", () => {
   });
 });
 
+describe("DELETE /api/comments/comment_id", () => {
+  test("Delete: 204 = Accepts a comment_id to delete and responds with a status 204 and no content", () => {
+    return request(app)
+      .delete("/api/comments/3")
+      .expect(204)
+      .then(({ body }) => {
+        expect(body).toEqual({});
+      });
+  });
+});
+
 describe("Invalid Endpoint", () => {
   test("404: Responds with a message when path is not found", () => {
     return request(app)
