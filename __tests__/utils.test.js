@@ -42,7 +42,7 @@ describe("createLookUpObject", () => {
       green: "k-pop",
     };
     const output = createLookUpObject(input, "favecolour", "favemusic");
-    // may need to check this test, as it may not be comparing the original data after being passed through the function.
+
     expect(input).toEqual(inputCopy);
   });
 });

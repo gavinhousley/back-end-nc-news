@@ -127,6 +127,23 @@ describe("GET /api/articles/", () => {
   });
 });
 
+describe("POST /api/:article_id/comments", () => {
+  test("Post: 201 = Responds with a confirmed created Comment on a specific article_id", () => {
+    return request(app)
+      .post("/api/articles/9/comments")
+      .send({
+        username: "butter_bridge",
+        body: "Love this article so much!",
+      })
+      .expect(201)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment.author).toBe("butter_bridge");
+        expect(comment.body).toBe("Love this article so much!");
+      });
+  });
+});
+
 describe("Invalid Endpoint", () => {
   test("404: Responds with a message when path is not found", () => {
     return request(app)

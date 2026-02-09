@@ -35,3 +35,21 @@ exports.fetchAllArticleComments = (article_id) => {
     )
     .then(({ rows }) => rows);
 };
+
+exports.insertArticleComment = (article_id, newComment) => {
+  const { username, body } = newComment;
+  return db
+    .query(
+      `INSERT INTO comments (article_id, author, body)
+        VALUES ($1, $2, $3)
+        RETURNING *`,
+      [article_id, username, body],
+    )
+    .then(({ rows }) => {
+      return rows[0];
+    })
+    .catch((err) => {
+      console.log(err);
+      throw err;
+    });
+};

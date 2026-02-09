@@ -2,6 +2,7 @@ const {
   getAllArticles: getAllArticlesService,
   getArticleById: getArticleByIdService,
   getAllArticleComments: getAllArticleCommentsService,
+  postArticleComment: postArticleCommentService,
 } = require("../services/articles.service");
 
 exports.getAllArticles = (req, res) => {
@@ -32,4 +33,21 @@ exports.getAllArticleComments = (req, res) => {
   getAllArticleCommentsService(article_id).then((comments) => {
     res.status(200).send({ comments: comments });
   });
+};
+
+exports.postArticleComment = (req, res) => {
+  const { article_id } = req.params;
+  const newComment = req.body;
+  if (isNaN(Number(article_id))) {
+    return res.status(400).send({ msg: "Invalid article_id" });
+  }
+
+  postArticleCommentService(article_id, newComment)
+    .then((createdComment) => {
+      res.status(201).send({ comment: createdComment });
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ msg: "Server error" });
+    });
 };
