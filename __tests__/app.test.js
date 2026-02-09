@@ -103,6 +103,19 @@ describe("GET /api/articles/", () => {
         expect(article.created_at).toBe("2020-06-06T09:10:00.000Z");
       });
   });
+  test("Get: 200 = Responds with the comments from a given article_id endpoint", () => {
+    return request(app)
+      .get("/api/articles/9/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        comments.forEach((comment) => {
+          expect(typeof comment.body).toBe("string");
+          expect(typeof comment.author).toBe("string");
+          expect(typeof comment.votes).toBe("number");
+        });
+      });
+  });
 });
 
 describe("Invalid Endpoint", () => {
@@ -122,7 +135,7 @@ describe("Invalid Endpoint", () => {
         expect(body.msg).toBe("Sorry, that article does not exist");
       });
   });
-  test("400: Responds with a message when passed an invalid id type", () => {
+  test("400: Responds with a message when passed an invalid article_id type", () => {
     return request(app)
       .get("/api/articles/banana")
       .expect(400)
