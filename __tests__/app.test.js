@@ -114,4 +114,20 @@ describe("Invalid Endpoint", () => {
         expect(body.msg).toBe("Path not found");
       });
   });
+  test("404: Responds with a message when passed a valid but non-existent article_id", () => {
+    return request(app)
+      .get("/api/articles/9999")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Sorry, that article does not exist");
+      });
+  });
+  test("400: Responds with a message when passed an invalid id type", () => {
+    return request(app)
+      .get("/api/articles/banana")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Sorry, the id type is invalid.");
+      });
+  });
 });

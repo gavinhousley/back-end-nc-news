@@ -11,6 +11,9 @@ exports.getAllArticles = (req, res) => {
 
 exports.getArticleById = (req, res) => {
   const { article_id } = req.params;
+  if (isNaN(Number(article_id))) {
+    return res.status(400).send({ msg: "Sorry, the id type is invalid." });
+  }
   getArticleByIdService(article_id).then((article) => {
     if (article !== undefined) {
       res.status(200).send({ article: article });
