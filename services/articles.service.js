@@ -3,6 +3,7 @@ const {
   fetchArticleById,
   fetchAllArticleComments,
   insertArticleComment,
+  updateArticleVote,
 } = require("../models/articles.model");
 
 exports.getAllArticles = () => {
@@ -19,4 +20,8 @@ exports.getAllArticleComments = (article_id) => {
 
 exports.postArticleComment = (article_id, newComment) => {
   return insertArticleComment(article_id, newComment);
+};
+
+exports.patchArticleVote = (article_id, inc_votes) => {
+  return updateArticleVote(article_id, inc_votes);
 };

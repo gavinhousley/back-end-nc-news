@@ -144,6 +144,21 @@ describe("POST /api/:article_id/comments", () => {
   });
 });
 
+describe("PATCH /api/:article_id/votes", () => {
+  test("Patch: 200 = Accepts an object to update the number of votes in an article.", () => {
+    return request(app)
+      .patch("/api/articles/9")
+      .send({
+        inc_votes: 1,
+      })
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article.votes).toBe(1);
+      });
+  });
+});
+
 describe("Invalid Endpoint", () => {
   test("404: Responds with a message when path is not found", () => {
     return request(app)

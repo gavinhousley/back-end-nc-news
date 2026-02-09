@@ -3,6 +3,7 @@ const {
   getArticleById: getArticleByIdService,
   getAllArticleComments: getAllArticleCommentsService,
   postArticleComment: postArticleCommentService,
+  patchArticleVote: patchArticleVoteService,
 } = require("../services/articles.service");
 
 exports.getAllArticles = (req, res) => {
@@ -50,4 +51,12 @@ exports.postArticleComment = (req, res) => {
       console.log(err);
       res.status(500).send({ msg: "Server error" });
     });
+};
+
+exports.patchArticleVote = (req, res, next) => {
+  const { article_id } = req.params;
+  const { inc_votes } = req.body;
+  patchArticleVoteService(article_id, inc_votes).then((updatedArticle) => {
+    res.status(200).send({ article: updatedArticle });
+  });
 };
