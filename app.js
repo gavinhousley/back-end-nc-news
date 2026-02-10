@@ -1,15 +1,15 @@
 const express = require("express");
 
-const app = express();
-
-app.use(express.json());
-
-const db = require("./db/connection");
-
 const topicsRouter = require("./routes/topics.routes");
 const articlesRouter = require("./routes/articles.routes");
 const usersRouter = require("./routes/users.routes");
 const commentsRouter = require("./routes/comments.routes");
+
+const app = express();
+
+app.use(express.json());
+
+app.use("/api", express.static("public"));
 
 app.use("/api/topics", topicsRouter);
 
