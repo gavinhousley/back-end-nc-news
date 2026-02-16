@@ -1,10 +1,8 @@
 const db = require("../db/connection");
 const { NotFoundError, BadRequestError } = require("../errors/custom.errors");
 
-exports.fetchAllArticles = () => {
-  return db
-    .query(
-      `SELECT 
+exports.fetchAllArticles = (sort_by = "created_at", order = "DESC") => {
+  const queryRequest = `SELECT 
         articles.author,
         articles.title,
         articles.article_id,
@@ -16,10 +14,10 @@ exports.fetchAllArticles = () => {
      FROM articles
      LEFT JOIN comments ON comments.article_id = articles.article_id 
      GROUP BY articles.article_id
-     ORDER BY created_at DESC
-     `,
-    )
-    .then(({ rows }) => rows);
+     ORDER BY ${sort_by} ${order.toUpperCase()}
+     `;
+
+  return db.query(queryRequest).then(({ rows }) => rows);
 };
 
 exports.fetchArticleById = (article_id) => {

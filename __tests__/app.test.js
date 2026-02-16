@@ -203,6 +203,48 @@ describe("DELETE /api/comments/comment_id", () => {
   });
 });
 
+describe("GET /api/articles - sorting queries", () => {
+  test("200: Defaults to sorting by created_at descending", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeSortedBy("created_at", { descending: true });
+      });
+  });
+
+  test("200:  Sorts by votes, descending", () => {
+    return request(app)
+      .get("/api/articles?sort_by=votes")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeSortedBy("votes", { descending: true });
+      });
+  });
+
+  test("200: Sorts by title, ascending", () => {
+    return request(app)
+      .get("/api/articles?sort_by=title&order=asc")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeSortedBy("title", { descending: false });
+      });
+  });
+
+  test("200: Sorts by comment_count descending", () => {
+    return request(app)
+      .get("/api/articles?sort_by=comment_count")
+      .expect(200)
+      .then(({ body }) => {
+        const { articles } = body;
+        expect(articles).toBeSortedBy("comment_count", { descending: true });
+      });
+  });
+});
+
 describe("Invalid Endpoint", () => {
   test("404: Responds with a message when path is not found", () => {
     return request(app)

@@ -6,8 +6,8 @@ const {
   updateArticleVote,
 } = require("../models/articles.model");
 
-exports.getAllArticles = () => {
-  return fetchAllArticles();
+exports.getAllArticles = (sort_by, order) => {
+  return fetchAllArticles(sort_by, order);
 };
 
 exports.getArticleById = (article_id) => {

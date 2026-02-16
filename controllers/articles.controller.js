@@ -7,9 +7,26 @@ const {
 } = require("../services/articles.service");
 
 exports.getAllArticles = (req, res, next) => {
-  getAllArticlesService().then((articles) => {
-    res.status(200).send({ articles });
-  });
+  const { sort_by = "created_at", order = "desc" } = req.query;
+  const validColumns = [
+    "created_at",
+    "votes",
+    "title",
+    "author",
+    "comment_count",
+  ];
+  if (!validColumns.includes(sort_by)) {
+    return res.status(400).send({ msg: "Invalid sort_by column" });
+  }
+  if (order !== "asc" && order !== "desc") {
+    return res.status(400).send({ msg: "Invalid order query" });
+  }
+
+  getAllArticlesService(sort_by, order)
+    .then((articles) => {
+      res.status(200).send({ articles });
+    })
+    .catch(next);
 };
 
 exports.getArticleById = (req, res, next) => {

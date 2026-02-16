@@ -12,6 +12,7 @@ const router = express.Router();
 
 router.get("/", getAllArticles);
 router.get("/:article_id", getArticleById);
+
 router.get("/:article_id/comments", getAllArticleComments);
 
 router.post("/:article_id/comments", postArticleComment);
