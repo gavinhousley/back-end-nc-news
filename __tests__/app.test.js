@@ -223,12 +223,32 @@ describe("Invalid Endpoint", () => {
 });
 
 describe("Invalid Post Format", () => {
-  test("400: Responds with a msg when making a comment post request with an invalid body", () => {
+  test("400: Responds with a msg when making a comment post request with a missing body", () => {
     return request(app)
       .post("/api/articles/9/comments")
       .send({
         username: "butter_bridge",
       })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Sorry there is not enough information to Post.");
+      });
+  });
+  test("400: Responds with a msg when making a comment post request without a username", () => {
+    return request(app)
+      .post("/api/articles/9/comments")
+      .send({
+        body: "Wonderful Article",
+      })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Sorry there is not enough information to Post.");
+      });
+  });
+  test("400: Responds with a msg when making a comment post and both fields are missing", () => {
+    return request(app)
+      .post("/api/articles/9/comments")
+      .send({})
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Sorry there is not enough information to Post.");
