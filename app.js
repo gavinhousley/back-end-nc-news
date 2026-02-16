@@ -23,4 +23,12 @@ app.all("/*path", (req, res, next) => {
   res.status(404).send({ msg: "Path not found" });
 });
 
+const {
+  cantFindErrors,
+  probablyServerErrors,
+} = require("./errors/error.handler");
+
+app.use(cantFindErrors);
+app.use(probablyServerErrors);
+
 module.exports = app;

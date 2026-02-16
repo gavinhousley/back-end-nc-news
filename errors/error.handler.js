@@ -1,15 +1,16 @@
-class NotFoundError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = "Not Found Error";
-  }
-}
+const { NotFoundError, BadRequestError } = require("../errors/custom.errors");
 
-class BadRequestError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = "Bad Request Error";
+exports.cantFindErrors = (err, req, res, next) => {
+  if (err instanceof NotFoundError) {
+    return res.status(404).send({ msg: "Path not found" });
   }
-}
+  if (err instanceof BadRequestError) {
+    return res.status(400).send({ msg: "Sorry, the syntax is invalid" });
+  }
+  next(err); // Pass to next middleware if not a custom error
+};
 
-module.exports = { NotFoundError, BadRequestError };
+exports.probablyServerErrors = (err, req, res, next) => {
+  console.error(err);
+  res.status(500).send({ msg: "Internal server error" });
+};

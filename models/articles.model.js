@@ -1,5 +1,5 @@
 const db = require("../db/connection");
-const { NotFoundError, BadRequestError } = require("../errors/error.handler");
+const { NotFoundError, BadRequestError } = require("../errors/custom.errors");
 
 exports.fetchAllArticles = () => {
   return db

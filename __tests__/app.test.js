@@ -185,12 +185,20 @@ describe("PATCH /api/:article_id/votes", () => {
 });
 
 describe("DELETE /api/comments/comment_id", () => {
-  test("Delete: 204 = Accepts a comment_id to delete and responds with a status 204 and no content", () => {
+  test("Delete: 204 = Creates a comment to delete and then deletes it and responds with a status 204 and no content", () => {
     return request(app)
-      .delete("/api/comments/3")
-      .expect(204)
+      .post("/api/articles/9/comments")
+      .send({
+        username: "butter_bridge",
+        body: "Comment to test and be deleted",
+      })
+      .expect(201)
       .then(({ body }) => {
-        expect(body).toEqual({});
+        const newCommentId = body.comment.comment_id;
+        console.log("Created comment ID", newCommentId);
+
+        return request(app).delete(`/api/comments/${newCommentId}`);
+        expect(204);
       });
   });
 });
@@ -209,7 +217,7 @@ describe("Invalid Endpoint", () => {
       .get("/api/articles/9999")
       .expect(404)
       .then(({ body }) => {
-        expect(body.msg).toBe("Sorry, that article does not exist");
+        expect(body.msg).toBe("Article not found");
       });
   });
   test("400: Responds with a message when passed an invalid article_id type", () => {
@@ -217,7 +225,7 @@ describe("Invalid Endpoint", () => {
       .get("/api/articles/banana")
       .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Sorry, the id type is invalid.");
+        expect(body.msg).toBe("Sorry, the id type is invalid");
       });
   });
 });
