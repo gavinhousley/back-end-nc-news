@@ -19,7 +19,7 @@ app.use("/api/users", usersRouter);
 
 app.use("/api/comments", commentsRouter);
 
-app.all("/*path", (req, res, next) => {
+app.use((req, res) => {
   res.status(404).send({ msg: "Path not found" });
 });
 

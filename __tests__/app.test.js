@@ -186,20 +186,7 @@ describe("PATCH /api/:article_id/votes", () => {
 
 describe("DELETE /api/comments/comment_id", () => {
   test("Delete: 204 = Creates a comment to delete and then deletes it and responds with a status 204 and no content", () => {
-    return request(app)
-      .post("/api/articles/9/comments")
-      .send({
-        username: "butter_bridge",
-        body: "Comment to test and be deleted",
-      })
-      .expect(201)
-      .then(({ body }) => {
-        const newCommentId = body.comment.comment_id;
-        console.log("Created comment ID", newCommentId);
-
-        return request(app).delete(`/api/comments/${newCommentId}`);
-        expect(204);
-      });
+    return request(app).delete("/api/comments/2").expect(204);
   });
 });
 
