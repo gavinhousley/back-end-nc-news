@@ -221,3 +221,17 @@ describe("Invalid Endpoint", () => {
       });
   });
 });
+
+describe("Invalid Post Format", () => {
+  test("400: Responds with a msg when making a comment post request with an invalid body", () => {
+    return request(app)
+      .post("/api/articles/9/comments")
+      .send({
+        username: "butter_bridge",
+      })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Sorry there is not enough information to Post.");
+      });
+  });
+});

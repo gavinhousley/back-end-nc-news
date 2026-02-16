@@ -1,4 +1,5 @@
 const db = require("../db/connection");
+const { NotFoundError, BadRequestError } = require("../errors/error.handler");
 
 exports.fetchAllArticles = () => {
   return db
@@ -45,11 +46,17 @@ exports.insertArticleComment = (article_id, newComment) => {
         RETURNING *`,
       [article_id, username, body],
     )
-    .then(({ rows }) => {
-      return rows[0];
-    })
+    .then(({ rows }) => rows[0])
     .catch((err) => {
-      console.log(err);
+      if (err.code === "23503") {
+        if (err.constraint === "comments_article_id_fkey") {
+          throw new NotFoundError("Article not found");
+        }
+        if (err.constraint === "comments_author-fkey") {
+          throw new NotFoundError("User not found");
+        }
+      }
+
       throw err;
     });
 };

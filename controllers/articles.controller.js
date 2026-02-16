@@ -42,6 +42,11 @@ exports.postArticleComment = (req, res) => {
   if (isNaN(Number(article_id))) {
     return res.status(400).send({ msg: "Invalid article_id" });
   }
+  if (!newComment.username || !newComment.body) {
+    return res
+      .status(400)
+      .send({ msg: "Sorry there is not enough information to Post." });
+  }
 
   postArticleCommentService(article_id, newComment)
     .then((createdComment) => {
