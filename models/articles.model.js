@@ -1,7 +1,14 @@
 const db = require("../db/connection");
 const { NotFoundError, BadRequestError } = require("../errors/custom.errors");
 
-exports.fetchAllArticles = (sort_by = "created_at", order = "DESC") => {
+exports.fetchAllArticles = (sort_by = "created_at", order = "DESC", topic) => {
+  const queryValues = [];
+  let whereClause = "";
+  if (topic) {
+    queryValues.push(topic);
+    whereClause = "WHERE articles.topic = $1";
+  }
+
   const queryRequest = `SELECT 
         articles.author,
         articles.title,
@@ -13,11 +20,12 @@ exports.fetchAllArticles = (sort_by = "created_at", order = "DESC") => {
         COUNT(comments.comment_id) ::INT AS comment_count
      FROM articles
      LEFT JOIN comments ON comments.article_id = articles.article_id 
+     ${whereClause}
      GROUP BY articles.article_id
      ORDER BY ${sort_by} ${order.toUpperCase()}
      `;
 
-  return db.query(queryRequest).then(({ rows }) => rows);
+  return db.query(queryRequest, queryValues).then(({ rows }) => rows);
 };
 
 exports.fetchArticleById = (article_id) => {

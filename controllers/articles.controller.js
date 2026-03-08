@@ -7,7 +7,7 @@ const {
 } = require("../services/articles.service");
 
 exports.getAllArticles = (req, res, next) => {
-  const { sort_by = "created_at", order = "desc" } = req.query;
+  const { sort_by = "created_at", order = "desc", topic } = req.query;
   const validColumns = [
     "created_at",
     "votes",
@@ -22,7 +22,7 @@ exports.getAllArticles = (req, res, next) => {
     return res.status(400).send({ msg: "Invalid order query" });
   }
 
-  getAllArticlesService(sort_by, order)
+  getAllArticlesService(sort_by, order, topic)
     .then((articles) => {
       res.status(200).send({ articles });
     })
