@@ -10,7 +10,11 @@ exports.cantFindErrors = (err, req, res, next) => {
   next(err); // Pass to next middleware if not a custom error
 };
 
-exports.probablyServerErrors = (err, req, res, next) => {
+exports.handleServerError = (err, req, res, next) => {
   console.error(err);
   res.status(500).send({ msg: "Internal server error" });
+};
+
+exports.pathNotFoundError = (req, res, next) => {
+  res.status(404).send({ msg: "Path not found" });
 };
