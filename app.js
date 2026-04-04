@@ -22,16 +22,14 @@ app.use("/api/users", usersRouter);
 
 app.use("/api/comments", commentsRouter);
 
-app.use((req, res) => {
-  res.status(404).send({ msg: "Path not found" });
-});
-
 const {
   cantFindErrors,
-  probablyServerErrors,
+  handleServerError,
+  pathNotFoundError,
 } = require("./errors/error.handler");
 
 app.use(cantFindErrors);
-app.use(probablyServerErrors);
+app.use(handleServerError);
+app.use(pathNotFoundError);
 
 module.exports = app;
