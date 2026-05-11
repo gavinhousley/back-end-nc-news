@@ -96,7 +96,9 @@ exports.updateArticleVote = (article_id, inc_votes) => {
       return rows[0];
     })
     .catch((err) => {
-      console.log(err);
+      if (err.code === "22P02") {
+        throw new BadRequestError("Invalid format");
+      }
       throw err;
     });
 };

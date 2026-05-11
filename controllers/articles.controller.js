@@ -34,13 +34,11 @@ exports.getArticleById = (req, res, next) => {
   if (isNaN(Number(article_id))) {
     return res.status(400).send({ msg: "Sorry, the id type is invalid" });
   }
-  getArticleByIdService(article_id).then((article) => {
-    if (article !== undefined) {
+  getArticleByIdService(article_id)
+    .then((article) => {
       res.status(200).send({ article: article });
-    } else {
-      res.status(404).send({ msg: "Article not found" });
-    }
-  });
+    })
+    .catch(next);
 };
 
 exports.getAllArticleComments = (req, res, next) => {
@@ -48,9 +46,11 @@ exports.getAllArticleComments = (req, res, next) => {
   if (isNaN(Number(article_id))) {
     return res.status(400).send({ msg: "Invalid article_id" });
   }
-  getAllArticleCommentsService(article_id).then((comments) => {
-    res.status(200).send({ comments: comments });
-  });
+  getAllArticleCommentsService(article_id)
+    .then((comments) => {
+      res.status(200).send({ comments: comments });
+    })
+    .catch(next);
 };
 
 exports.postArticleComment = (req, res, next) => {
@@ -75,7 +75,9 @@ exports.postArticleComment = (req, res, next) => {
 exports.patchArticleVote = (req, res, next) => {
   const { article_id } = req.params;
   const { inc_votes } = req.body;
-  patchArticleVoteService(article_id, inc_votes).then((updatedArticle) => {
-    res.status(200).send({ article: updatedArticle });
-  });
+  patchArticleVoteService(article_id, inc_votes)
+    .then((updatedArticle) => {
+      res.status(200).send({ article: updatedArticle });
+    })
+    .catch(next);
 };
