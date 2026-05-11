@@ -257,6 +257,14 @@ describe("Invalid Endpoint", () => {
         expect(body.msg).toBe("Sorry, the id type is invalid");
       });
   });
+  test("404: Responds with a 404 when provided a non-existent topic", () => {
+    return request(app)
+      .get("/api/articles?topic=skateboarding")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Topic not found");
+      });
+  });
 });
 
 describe("Invalid Post Format", () => {
@@ -289,6 +297,40 @@ describe("Invalid Post Format", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toBe("Sorry there is not enough information to Post.");
+      });
+  });
+  test("404: Responds with a msg when making a comment post to a non-existent article", () => {
+    return request(app)
+      .post("/api/articles/999/comments")
+      .send({
+        body: "Great job on this!",
+        username: "davidson",
+      })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article not found");
+      });
+  });
+  test("404: Responds with a msg when making a vote change to a non-existent article", () => {
+    return request(app)
+      .patch("/api/articles/999")
+      .send({
+        inc_votes: 1,
+      })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Article not found");
+      });
+  });
+  test("400: Responds with a msg when making a vote change with an invalid format", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({
+        inc_votes: "zebra",
+      })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Invalid format");
       });
   });
 });
